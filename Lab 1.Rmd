@@ -1,0 +1,43 @@
+---
+title: "Lab 1: Reading and Graphing Community Data"
+output: html_notebook
+---
+
+This is an [R Markdown](http://rmarkdown.rstudio.com) Notebook. When you execute code within the notebook, the results appear beneath the code. 
+
+Try executing this chunk by clicking the *Run* button within the chunk or by placing your cursor inside it and pressing *Ctrl+Shift+Enter*. 
+
+### Load libraries
+```{r}
+library(labdsv)
+
+```
+
+### Read data table
+
+```{r}
+veg <- read.table("bryceveg.R",header=TRUE,row.names=1)
+
+```
+
+
+### Viewing the Data
+
+Basic info on the vegetation table
+
+```{r}
+str(veg)
+dim(veg)
+names(veg)
+row.names(veg)
+
+```
+
+### Transformation of Vegetation Data
+
+```{r}
+vegsq <- veg^2
+vegsqrt <- sqrt(veg)
+```
+
+When you save the notebook, an HTML file containing the code and output will be saved alongside it (click the *Preview* button or press *Ctrl+Shift+K* to preview the HTML file).
