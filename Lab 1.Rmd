@@ -1,5 +1,7 @@
 ---
 title: "Lab 1: Reading and Graphing Community Data"
+author: "Rob Shearer"
+date: "2018-02-21"
 output: html_notebook
 ---
 
@@ -10,6 +12,7 @@ Try executing this chunk by clicking the *Run* button within the chunk or by pla
 ### Load libraries
 ```{r}
 library(labdsv)
+library(ggplot2)
 
 ```
 
@@ -40,4 +43,64 @@ vegsq <- veg^2
 vegsqrt <- sqrt(veg)
 ```
 
-When you save the notebook, an HTML file containing the code and output will be saved alongside it (click the *Preview* button or press *Ctrl+Shift+K* to preview the HTML file).
+
+### Convert cover class to percent cover
+
+```{r}
+x <- c(0.2, 0.5, 1.0, 2.0, 3.0, 4.0, 5.0, 6.0)
+y <- c(0.2, 0.5, 3.0, 15.0, 37.5, 62.5, 85.0, 97.5)
+cover <- vegtrans(veg, x, y)
+```
+
+View a portion of the transformed data
+```{r}
+cover[1:15, 1:10]
+```
+
+## Tackle some questions
+
+### How many plots does each species occur in?
+
+
+```{r}
+spc.pres <- apply(veg > 0, 2, sum) # veg > 0 to check for prescence, 2 to apply to columns, sum is the function
+
+```
+
+Examine the cumulative distribution of species in the study
+
+One option using qplot
+```{r}
+qplot(seq_along(sort(spc.pres)), sort(spc.pres), log="y")
+```
+
+Or alternatively with ggplot
+```{r}
+spc.pres.ordered = data.frame(seq_along(sort(spc.pres)), sort(spc.pres))
+names(spc.pres.ordered) = c("index", "count")
+ggplot(spc.pres.ordered, aes(x = index, y = count)) + scale_y_log10() + geom_point()
+```
+
+
+
+### How many species in each plot
+
+```{r}
+plot.species <- apply(veg > 0, 1, sum) # veg >0 to check for prescence, 1 to apply to rows, sum is the function
+median(plot.species)
+mean(plot.species)
+```
+
+
+### What is the mean cover for each species when it occurs
+
+```{r}
+tmp <- apply(cover,2,sum)
+spc.mean <- tmp/spc.pres
+abundance <- data.frame(seq_along(sort(spc.mean)), sort (spc.mean))
+names(abundance) <- c("index", "abundance")
+
+```
+
+
+ggplot()
